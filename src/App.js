@@ -1,22 +1,29 @@
-//Mindhive AI-assistant Mira Nuotio
+// Mindhive AI Assistant - Mira Nuotio
 
 import React, { useState } from "react";
 import OpenAI from "openai";
 
+// API key hidden – this pulls it from .env
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true
+  dangerouslyAllowBrowser: true // yeah I know this isn’t ideal, but it was needed for the demo to work
 });
 
 function App() {
+  //user’s input message
   const [message, setMessage] = useState("");
+
+  //this will hold AI’s summary
   const [summary, setSummary] = useState("");
+
+  // and this will hold the mood (sentiment)
   const [sentiment, setSentiment] = useState("");
 
+  //button send message AI 
   const handleAnalyze = async () => {
     try {
       const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
+        model: "gpt-3.5-turbo", // didn’t use 4 because of API limits
         messages: [
           {
             role: "user",
@@ -27,14 +34,15 @@ function App() {
 
       console.log("OpenAI raw response:", response);
 
+      //splitting summary and mood
       const fullResponse = response.choices[0].message.content;
       const [summaryText, sentimentText] = fullResponse.split("\n");
 
       setSummary(summaryText);
-      setSentiment(sentimentText.trim()); // <- siistitty
+      setSentiment(sentimentText.trim()); // .trim() was needed to get the color thing working properly
     } catch (error) {
       console.error("Error calling OpenAI:", error);
-      setSummary("Sorry, something went wrong.");
+      setSummary("Sorry, something went wrong."); //errormessage
     }
   };
 
@@ -46,7 +54,7 @@ function App() {
       alignItems: "center",
       justifyContent: "center",
       padding: "2rem",
-      background: "#EDE7F6",
+      background: "#EDE7F6", //light lilac background
       fontFamily: "'Poppins', sans-serif"
     }}>
       <div style={{
@@ -55,7 +63,7 @@ function App() {
         background: "#ffffff",
         borderRadius: "16px",
         padding: "2rem",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)" 
       }}>
         {/* Title and logo */}
         <div style={{
@@ -66,7 +74,7 @@ function App() {
         }}>
           <h1 style={{
             fontSize: "2rem",
-            color: "#6441A5",
+            color: "#6441A5", //Mindhive purple
             margin: 1,
             marginLeft: 65
           }}>
@@ -75,7 +83,7 @@ function App() {
           <img
             src="/logo_mindhive.jpg"
             alt="Mindhive logo"
-            style={{ height: "40px", marginRight: "10rem" }}
+            style={{ height: "40px", marginRight: "10rem" }} //ok this margin is kinda random but it worked visually
           />
         </div>
 
@@ -95,7 +103,7 @@ function App() {
           }}
           placeholder="Write your message here"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value)} //live update input
         />
 
         <br />
@@ -119,39 +127,41 @@ function App() {
           </button>
         </div>
 
-        {/* Results */}
+        {/* AI summary response */}
         {summary && (
           <div style={{
             marginTop: "2rem",
-            background: "#F3E5F5",
+            background: "#F3E5F5", // another soft purple tone
             padding: "1.5rem",
             borderRadius: "12px",
             textAlign: "center"
           }}>
             <h3>Summary:</h3>
-            <p>{summary.replace(/^1\)\s*/, "")}</p>
+            <p>{summary.replace(/^1\)\s*/, "")}</p> {/* removing the 1) from GPT */}
           </div>
         )}
 
+        {/* mood detection */}
         {sentiment && (
           <div style={{
             marginTop: "1rem",
             background:
-              sentiment.toLowerCase().includes("positive") ? "#E8F5E9" :
-              sentiment.toLowerCase().includes("negative") ? "#FCE4EC" :
-              "#E3F2FD",
+              sentiment.toLowerCase().includes("positive") ? "#E8F5E9" : // greenish
+              sentiment.toLowerCase().includes("negative") ? "#FCE4EC" : // pinkish
+              "#E3F2FD", // blueish for neutral
             padding: "1.5rem",
             borderRadius: "12px",
             textAlign: "center"
           }}>
             <h3>Detected Emotion:</h3>
-            <p>{sentiment.replace(/^2\)\s*/, "")}</p>
+            <p>{sentiment.replace(/^2\)\s*/, "")}</p> {/* removing the 2) from GPT */}
           </div>
         )}
       </div>
 
+      {/* Footer for a little personality */}
       <footer style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.9rem", color: "#888" }}>
-        Created with ❤️ by Mira Nuotio
+        Created with love by Mira Nuotio
       </footer>
     </div>
   );
