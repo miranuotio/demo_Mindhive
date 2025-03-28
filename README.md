@@ -26,7 +26,7 @@ This project runs locally and showcases how an AI can summarize a message and de
 ## Screenshots
 
 ### Positive
-![Positive emotion detected](./assets/ss1Positive.jpg)
+![Positive emotion detected](./assets/ss1Positve.JPG)
 
 ### Neutral
 ![Neutral emotion detected](./assets/ss3Neutral.JPG)
