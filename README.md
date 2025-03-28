@@ -1,4 +1,4 @@
-# API AI Demo
+# API AI Demo - message assistant
 
 A simple AI demo made with React, inspired by Mindhive. 
 
@@ -19,7 +19,21 @@ It’s inspired by the Mindhive website – including the colors and overall vib
 
 ## Demo Preview
 
-*You can add a screenshot here later if you want!*
+## Demo Preview
+
+This project runs locally and showcases how an AI can summarize a message and detect the emotional tone.
+
+## Screenshots
+
+### Positive
+![Positive emotion detected](./assets/ss1Positive.jpg)
+
+### Neutral
+![Neutral emotion detected](./assets/ss3Neutral.JPG)
+
+### Negative
+![Negative emotion detected](./assets/ss2Negative.JPG)
+
 
 ## Author
 
